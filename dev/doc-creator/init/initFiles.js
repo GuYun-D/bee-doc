@@ -3,10 +3,12 @@ const {
   outerPath: { cssPath, jsPath, htmlPath },
   innerDir: { jsDir, cssDir, htmlDir },
 } = require("../config");
+const { createIndexHtml } = require("../compiler");
 
 function initFiles() {
   copyFile("css");
   copyFile("js");
+  createIndexHtml()
   // 当项目中的html文件不存在的时候在进行拷贝
   copyWelcomePage();
 }
