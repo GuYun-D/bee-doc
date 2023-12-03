@@ -17,7 +17,7 @@ const outerPath = {
   srcPath: resolve("../../../src"),
   htmlPath: resolve("../../../src/html"),
   jsPath: resolve("../../../src/js"),
-  htmlPath: resolve("../../../src/html"),
+  cssPath: resolve("../../../src/css"),
   mdPath: resolve("../../../workspace"),
 };
 
