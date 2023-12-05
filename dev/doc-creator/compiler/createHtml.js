@@ -46,7 +46,11 @@ function createIndexHtml(options) {
   );
 
   // 写入文件
-  writeFileSync(rootPath + "/index.html", newHtml);
+  writeFileSync(rootPath + "/index.html", newHtml, (err) => {
+    if (err) {
+      throw new Error("file is failed to write.", err);
+    }
+  });
 }
 
 module.exports = {
