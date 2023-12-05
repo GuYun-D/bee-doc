@@ -5,12 +5,12 @@ const {
 } = require("../config");
 const { createIndexHtml } = require("../compiler");
 
-function initFiles() {
+function initFiles(options) {
   copyFile("css");
   copyFile("js");
-  createIndexHtml()
+  createIndexHtml(options);
   // 当项目中的html文件不存在的时候在进行拷贝
-  copyWelcomePage();
+  copyWelcomePage(options);
 }
 
 /**

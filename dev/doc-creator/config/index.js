@@ -1,6 +1,6 @@
 const { resolve } = require("../utils/path");
 
-const port = process.env.npm_config_port;
+const port = 5173;
 const domain = "http://localhost";
 const title = "Bee Doc";
 
@@ -35,10 +35,17 @@ const innerDir = {
   jsDir: resolve("../temp_files/js"),
 };
 
+const regexp = {
+  reg_ulContent: /<ul class=\"menu-list\">([\s\S]*?)<\/ul>/, // 匹配menu-lit内部的内容
+  reg_title: /<title>([\s\S]*?)<\/title>/,
+  reg_headerTitleContent: ''
+};
+
 module.exports = {
   title,
   port,
   domain,
   outerPath,
   innerDir,
+  regexp
 };
