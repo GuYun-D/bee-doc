@@ -12,7 +12,7 @@ const {
 } = require("../config");
 const { myReadFileSync } = require("../utils/file");
 
-function createIndexHtml(options) {
+function createIndexHtml(options, outerFilename) {
   const _htmlFiles = readdirSync(htmlPath);
 
   if (!_htmlFiles.length) {
@@ -33,16 +33,29 @@ function createIndexHtml(options) {
 
   let menuListStr = "";
   let newHtml = "";
+  let curIndex = outerFilename ? [].indexOf.call(_htmlFiles, outerFilename) : 0;
+
+  console.log("叼你老母", outerFilename, _htmlFiles);
 
   _htmlFiles.map((filename, index) => {
-    menuListStr += createMenuItem(filename, options.domain, options.port, true);
+    if (outerFilename) {
+      if (filename === outerFilename) {
+        curIndex = index;
+      }
+    }
+    menuListStr += createMenuItem(
+      filename,
+      options.domain,
+      options.port,
+      curIndex === index
+    );
   });
 
   newHtml = _indexHtmlStr.replace("<!--menu list-->", menuListStr);
   newHtml = newHtml.replaceAll("<!--doc title-->", options.title || title);
   newHtml = newHtml.replace(
     "<!--iframe page-->",
-    createIfame(_htmlFiles[0], options.domain, options.port)
+    createIfame(_htmlFiles[curIndex], options.domain, options.port)
   );
 
   // 写入文件
