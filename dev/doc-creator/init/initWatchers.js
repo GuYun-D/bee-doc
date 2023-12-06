@@ -1,4 +1,4 @@
-const { watch } = require("fs");
+const { watch, existsSync, unlinkSync } = require("fs");
 
 /**
  * watch是监听文件获取文件夹的变化
@@ -13,9 +13,10 @@ const { watch } = require("fs");
  */
 
 const {
-  outerPath: { htmlPath },
+  outerPath: { htmlPath, mdPath },
 } = require("../config/index");
 const { createIndexHtml } = require("../compiler/createHtml");
+const mdToHtml = require("../compiler/mdToHtml");
 
 function initWatchers(options) {
   watchHtml(options);
@@ -25,12 +26,24 @@ function initWatchers(options) {
 function watchHtml(options) {
   watch(htmlPath, (event, filename) => {
     if (filename) {
-        console.log("我也是醉了呀", event);
+      console.log("我也是醉了呀", event);
       createIndexHtml(options, event === "change" ? filename : undefined);
     }
   });
 }
 
-function watchMarkdown() {}
+function watchMarkdown() {
+  watch(mdPath, (eveent, filename) => {
+    if (filename) {
+      if (!existsSync(mdPath + "/" + filename)) {
+        const removingFile = htmlPath + "/" + filename.replace(".md", ".html");
+        existsSync(removingFile) && unlinkSync(removingFile);
+        return;
+      }
+
+      mdToHtml(filename);
+    }
+  });
+}
 
 module.exports = initWatchers;
